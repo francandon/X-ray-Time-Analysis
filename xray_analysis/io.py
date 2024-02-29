@@ -1,9 +1,17 @@
 # io.py
+from pathlib import Path
 from astropy.io import fits
 
+# Define the base directory for your data files
+DATA_DIR = Path(__file__).parent / 'data'
+
 def read_fits_light_curve(filename):
-    with fits.open(filename) as hdul:
-        data = hdul[1].data  # Assuming the light curve data is in the first extension
-        time = data['TIME']  # Adjust field names as necessary
+    # Construct the full path to the file
+    file_path = DATA_DIR / filename
+    
+    # Use the full path to open the FITS file
+    with fits.open(file_path) as hdul:
+        data = hdul[1].data  # Adjust according to your FITS file structure
+        time = data['TIME']
         flux = data['FLUX']
     return time, flux
